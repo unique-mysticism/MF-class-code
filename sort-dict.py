@@ -15,4 +15,4 @@ users = {'1':{'username':'ali24',
         'phone': '09377536541'
         }
 }
-print(sorted(users.items(),key=lambda a : a[1]["username"], reverse=True))
+print(dict(sorted(users.items(),key=lambda a : a[1]["username"], reverse=True)))
