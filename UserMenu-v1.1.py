@@ -25,7 +25,7 @@ def signup_def():
     username = input("\tUsername: ").strip()
     if username.isidentifier() and username not in [user.username for user in accounts]:
         phone_num = input("\tEnter your phone number (09*****): ").strip()
-        if len(phone_num) == 11 and phone_num.startswith("09") and phone_num.isdecimal:
+        if len(phone_num) == 11 and phone_num.startswith("09") and phone_num.isdecimal():
             password = input("\tPassword: ").strip()
             if len(password)<9 and password.isalpha():
                 accounts.append(Users(username, password, phone_num))
@@ -52,8 +52,8 @@ def signin_def():
     else:
         print("\n\t Error: Wrong Username or Password")
 
-# def forgetpassword_def():
-#     print("This section is Not ready")
+def forgetpassword_def():
+    print("This section is Not ready")
 
 #******Objects******#
 class Users():
@@ -100,12 +100,14 @@ wrong_choose = "Oops Wrong Input, Please choose the correct item below."
 #******define Options and Menus******#
 #put all items in a empty list
 #if an item has submenu define it in options
-main_bar, signin_menu, signup_menu = [], [], []
+main_bar, signin_menu, signup_menu, forgetpassword_menu = [], [], [], []
 options = [       
             MenuItems("main_bar", "Sign Up", "Create account", 1),
-            MenuItems("main_bar", "Sign In", "Login", 2)
+            MenuItems("main_bar", "Sign In", "Login", 2),
+            MenuItems("signin_menu", "Forget Password", "Reset Password", 1)
             ]
-
+#add an option in another menu 
+signup_menu.append(next(item for item in options if item.name == "Sign In"))
 #******define accounts******#
 accounts = [
             Users("admin","admin","")
@@ -118,6 +120,7 @@ MenuItems.sort_menu(main_bar)
 clear()
 current_menu = main_bar
 error = False
+supper_menu = []
 #******User Select******#
 while True:
 #Check if The slkt(select) was Wrong!
@@ -139,7 +142,7 @@ while True:
         #opens selected item secion (returns string)
         slkted_item = "".join(current_items[slkt].lower().split())+"_menu"
         #remember the supermenu
-        supper_menu = current_items[slkt]
+        supper_menu.append(current_items[slkt])
         #change current menu to selected item's submenu
             #globals()[slkted_item] ==> it converts ("slkted_item" as string) to (slkted_item as global variable)
         current_menu = globals()[slkted_item]
@@ -159,12 +162,13 @@ while True:
                 clear()
                 print("See you Soon.")
                 break
-            #if there is a supermenu go back
             else:
                 clear()
                 for option in options:
-                    if option.name is supper_menu:
+                    if option.name is supper_menu[-1]:
+                        supper_menu.pop()
                         current_menu = globals()[option.category]
+                        break
 #Wrong input
     else:
         clear()
